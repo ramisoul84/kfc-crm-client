@@ -1,1 +1,66 @@
-<p>login works!</p>
+<div class="login-container">
+    <div class="login-background">
+        <div class="bg-overlay"></div>
+        <div class="bg-pattern"></div>
+    </div>
+
+    <div class="logo-corner">
+        <img src="assets/kfc-logo.svg" alt="KFC" class="logo" />
+    </div>
+
+    <div class="login-card">
+        <div class="login-header">
+            <h1 class="welcome-text">Welcome to KFC CRM</h1>
+            <p class="subtitle">Sign in to manage your restaurants</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+            <div class="form-group">
+                <label for="email" class="form-label">
+                    <span class="material-icons">email</span>
+                    Email Address
+                </label>
+                <input id="email" type="email" formControlName="email" class="form-control"
+                    [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                    placeholder="Enter your email" autocomplete="email" />
+                @if (getErrorMessage('email')) {
+                <div class="error-message">
+                    {{ getErrorMessage('email') }}
+                </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">
+                    <span class="material-icons">lock</span>
+                    Password
+                </label>
+                <div class="input-wrapper">
+                    <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                        class="form-control"
+                        [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                        placeholder="Enter your password" autocomplete="current-password" />
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                        <span class="material-icons">{{ showPassword ? 'hide' : 'show' }}</span>
+                    </button>
+                </div>
+                @if (getErrorMessage('password')) {
+                <div class="error-message">
+                    {{ getErrorMessage('password') }}
+                </div>
+                }
+            </div>
+
+            <button type="submit" class="btn-login" [disabled]="loginForm.invalid || isLoading">
+                @if (!isLoading) {
+                <span>Sign In</span>
+                }@else {
+                <span class="spinner"></span>
+                }
+            </button>
+        </form>
+    </div>
+</div>
+
+<app-toast-container></app-toast-container>

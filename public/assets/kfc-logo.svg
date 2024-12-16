@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c8102e"/>
+      <stop offset="100%" stop-color="#8b0000"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  <text x="100" y="85" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-weight="900" font-size="52">KFC</text>
+  <text x="100" y="130" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Arial, sans-serif" font-weight="700" font-size="22" letter-spacing="4">CRM</text>
+  <line x1="60" y1="145" x2="140" y2="145" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+  <text x="100" y="168" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-family="Arial, sans-serif" font-size="11" letter-spacing="2">MANAGEMENT</text>
+</svg>
