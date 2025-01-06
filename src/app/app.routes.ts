@@ -1,23 +1,39 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/login/login';
-import { MainLayout } from './features/main-layout/main-layout';
-import { Dashboard } from './features/dashboard/dashboard';
 import { AuthGuard } from './core/guards/auth.guard';
+import { PasswordUpdateGuard } from './core/guards/password-update.guard';
 
 export const routes: Routes = [
     {
         path: 'login',
-        component: Login
+        loadComponent: () => import('./features/login/login').then(m => m.Login)
+    },
+    {
+        path: 'force-change-password',
+        loadComponent: () => import('./features/force-change-password/force-change-password').then(m => m.ForceChangePassword),
+        canActivate: [AuthGuard, PasswordUpdateGuard] // Both guards
     },
     {
         path: '',
-        component: MainLayout,
+        loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayout),
         canActivate: [AuthGuard],
         children: [
             {
-                path: 'dashboard',
-                component: Dashboard
+                path: '',
+                redirectTo: 'dashboard',
+                pathMatch: 'full'
             },
+            {
+                path: 'dashboard',
+                loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard)
+            },
+            {
+                path: 'profile',
+                loadComponent: () => import('./features/profile/profile').then(m => m.Profile)
+            }
         ]
+    },
+    {
+        path: '**',
+        redirectTo: 'login'
     }
 ];
