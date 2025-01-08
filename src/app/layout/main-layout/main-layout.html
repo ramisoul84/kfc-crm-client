@@ -1,1 +1,57 @@
-<p>main-layout works!</p>
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+        <div class="sidebar-header">
+            <div class="logo" (click)="toggleSidebar()">
+                <img src="assets/kfc-logo.svg" alt="KFC CRM" class="logo-img" />
+                @if (!isSidebarCollapsed) {
+                <span class="logo-text">KFC CRM</span>
+                }
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                @for (item of filteredNavItems; track $index) {
+                <li>
+                    <a [routerLink]="item.route" routerLinkActive="active">
+                        <span class="material-icons nav-icon">{{ item.icon }}</span>
+
+                        @if (!isSidebarCollapsed) {
+                        <span class="nav-label">{{ item.label }}</span>
+                        }
+                    </a>
+                </li>
+                }
+            </ul>
+        </nav>
+        @if (currentManager) {
+        <div class="sidebar-footer">
+            @if (!isSidebarCollapsed) {
+            <a class="user-info" routerLink="/profile">
+                <div class="user-avatar">
+                    {{ currentManager.name[0] }}
+                </div>
+                <div class="user-details">
+                    <div class="user-name">{{ currentManager.name }}</div>
+                    <div class="user-role">{{ roleLabel(currentManager.role) }}</div>
+                </div>
+            </a>
+            }
+            <button class="logout-btn" (click)="logout()" title="Logout">
+                <span class="material-icons">logout</span>
+            </button>
+        </div>
+        }
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" [class.expanded]="isSidebarCollapsed">
+        <div class="content-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>
+
+<!-- Toast Container -->
+<app-toast-container></app-toast-container>

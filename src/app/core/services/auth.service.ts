@@ -35,17 +35,13 @@ export class AuthService {
     const manager = this.getStoredManager();
 
     if (token && manager) {
-      // Validate token expiration
       if (this.isTokenExpired(token)) {
         this.clearAuth();
         return;
       }
       this.currentManagerSubject.next(manager);
-    } else if (token && !manager) {
-      // Token exists but no manager data - fetch from server
-      this.getProfile().subscribe({
-        error: () => this.clearAuth()
-      });
+    } else{
+      this.clearAuth()
     }
   }
 
@@ -138,6 +134,7 @@ export class AuthService {
     }
   }
 
+  /*
   getProfile(): Observable<Manager> {
     return this.http.get<{ manager: Manager }>(`${this.api}/auth/me`).pipe(
       map(response => response.manager || response),
@@ -150,7 +147,7 @@ export class AuthService {
       catchError(this.handleError)
     );
   }
-
+*/
   isAuthenticated(): boolean {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);

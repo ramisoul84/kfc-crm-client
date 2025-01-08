@@ -1,1 +1,136 @@
-<p>profile works!</p>
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">My Profile</h1>
+    </div>
+
+    @if (isLoading) {
+    <div class="loading-skeleton">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card" style="margin-top: 1.5rem;"></div>
+    </div>
+    }
+
+    @if (!isLoading && profile) {
+    <!-- Profile Info Card -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <div class="avatar-lg">{{ profile.name[0] }}</div>
+                <div>
+                    <h2>{{ profile.name }}</h2>
+                    <span class="role-badge" [class]="'role-' + profile.role">{{ roleLabel }}</span>
+                </div>
+            </div>
+            @if (!isEditing) {
+            <button class="btn-outline" (click)="startEditing()">
+                <span class="material-icons">edit</span>
+                Edit Profile
+            </button>
+            }
+        </div>
+
+        @if (isEditing) {
+        <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="card-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input formControlName="name" class="form-control" placeholder="Full name" />
+                    @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
+                    <div class="field-error">Name is required (min 2 characters)</div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input formControlName="email" class="form-control" placeholder="Email address" type="email" />
+                    @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+                    <div class="field-error">Valid email required</div>
+                    }
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" (click)="cancelEditing()">Cancel</button>
+                <button type="submit" class="btn-primary" [disabled]="profileForm.invalid || isSavingProfile">
+                    @if (isSavingProfile) { <span class="spinner-sm"></span> }
+                    @else { Save Changes }
+                </button>
+            </div>
+        </form>
+        } @else {
+        <div class="card-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{ profile.email }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Role</span>
+                    <span class="info-value">{{ roleLabel }}</span>
+                </div>
+                @if (profile.city) {
+                <div class="info-item">
+                    <span class="info-label">City</span>
+                    <span class="info-value">{{ profile.city }}</span>
+                </div>
+                }
+                @if (profile.restaurant) {
+                <div class="info-item">
+                    <span class="info-label">Restaurant</span>
+                    <span class="info-value">{{ profile.restaurant}}</span>
+                </div>
+                }
+                <div class="info-item">
+                    <span class="info-label">Member Since</span>
+                    <span class="info-value">{{ profile.created_at | date:'mediumDate' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Last Update</span>
+                    <span class="info-value">{{ profile.updated_at | date:'mediumDate' }}</span>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+    <!-- Change Password Card -->
+    <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+            <h2>Change Password</h2>
+        </div>
+        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="card-body">
+            <div class="form-group">
+                <label class="form-label" for="old_password">Current Password</label>
+                <input id="old_password" formControlName="old_password" class="form-control" type="password"
+                    placeholder="Enter current password" />
+                @if (passwordForm.get('old_password')?.invalid && passwordForm.get('old_password')?.touched) {
+                <div class="field-error">Minimum 8 characters</div>
+                }
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="new_password">New Password</label>
+                    <input id="new_password" formControlName="new_password" class="form-control" type="password"
+                        placeholder="Enter new password" />
+                    @if (passwordForm.get('new_password')?.invalid && passwordForm.get('new_password')?.touched) {
+                    <div class="field-error">Minimum 8 characters</div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="confirm_password">Confirm Password</label>
+                    <input id="confirm_password" formControlName="confirm_password" class="form-control" type="password"
+                        placeholder="Confirm new password" />
+                    @if (passwordForm.get('confirm_password')?.invalid && passwordForm.get('confirm_password')?.touched)
+                    {
+                    <div class="field-error">Required</div>
+                    }
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" [disabled]="passwordForm.invalid || isSavingPassword">
+                    @if (isSavingPassword) { <span class="spinner-sm"></span> }
+                    @else { Change Password }
+                </button>
+            </div>
+        </form>
+    </div>
+    }
+</div>

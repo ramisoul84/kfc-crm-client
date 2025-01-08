@@ -1,0 +1,80 @@
+<div class="page-container">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Managers</h1>
+            <p class="page-subtitle">Manage staff accounts and roles across all restaurants</p>
+        </div>
+    </div>
+
+    @if (error) {
+    <div class="error-banner">
+        <span class="material-icons">error_outline</span>
+        <span>{{ error }}</span>
+        <button class="btn-retry" (click)="load()">Retry</button>
+    </div>
+    }
+
+    @if (isLoading) {
+    <div class="loading-skeleton">
+        <div class="skeleton-table">
+            @for (_ of [1,2,3,4]; track $index) {
+            <div class="skeleton-row">
+                <div class="skeleton-cell skeleton-cell-lg"></div>
+                <div class="skeleton-cell skeleton-cell-md"></div>
+                <div class="skeleton-cell skeleton-cell-sm"></div>
+                <div class="skeleton-cell skeleton-cell-sm"></div>
+                <div class="skeleton-cell skeleton-cell-sm"></div>
+            </div>
+            }
+        </div>
+    </div>
+    }
+
+    @if (!isLoading && !error) {
+    <div class="card">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Restaurant</th>
+                        <th>City</th>
+                        <th>Status</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (m of managers; track m.manager_id) {
+                    <tr>
+                        <td class="font-medium">{{ m.name }}</td>
+                        <td>
+                            <span class="role-badge" [class]="'role-' + m.role">
+                                {{ roleLabel(m.role) }}
+                            </span>
+                        </td>
+                        <td>{{ m.restaurant || '—' }}</td>
+                        <td>{{ m.city || '—' }}</td>
+                        <td>
+                            <span class="status-badge" [class.active]="m.is_active" [class.inactive]="!m.is_active">
+                                {{ m.is_active ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                        <td class="text-muted">{{ m.created_at | date:'mediumDate' }}</td>
+                        <td class="actions-cell">
+                            xx
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="8" class="empty-state">No managers found</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    }
+</div>
